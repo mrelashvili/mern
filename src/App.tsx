@@ -107,7 +107,7 @@ function App() {
           catchAll={<ErrorComponent />}
           resources={[
             {
-              name: "property"
+              name: "properties"
             },
           ]}
           Title={Title}
