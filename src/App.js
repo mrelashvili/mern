@@ -15,7 +15,7 @@ function App() {
       <MainNavigation />
       <main>
         <Switch>
-          <Route path="/">
+          <Route path="/" exact>
             <Users />
           </Route>
           <Route path="/places/new" exact>
