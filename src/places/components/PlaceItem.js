@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElement/Card';
+import Map from '../../shared/components/UIElement/Map';
 import Modal from '../../shared/components/UIElement/Modal';
 import './PlaceItem.css';
 
@@ -12,6 +13,8 @@ const PlaceItem = ({ place }) => {
 
   const { id, imageUrl, title, description, address, creator, location } =
     place;
+
+  console.log('locc', location);
   return (
     <>
       <Modal
@@ -23,7 +26,8 @@ const PlaceItem = ({ place }) => {
         footer={<Button onClick={closeMapHandler}>Close</Button>}
       >
         <div className="map-container">
-          <h2>The map!</h2>
+          <span>lat: {location.lat}</span>
+          <span>lng: {location.lng}</span>
         </div>
       </Modal>
       <li className="place-item">
