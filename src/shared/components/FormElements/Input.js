@@ -11,12 +11,12 @@ const inputReducer = (state, action) => {
         value: action.val,
         isValid: validate(action.val, action.validators),
       };
-    case 'TOUCH':
+    case 'TOUCH': {
       return {
         ...state,
-        value: action.val,
         isTouched: true,
       };
+    }
     default:
       return state;
   }
@@ -34,18 +34,20 @@ const Input = (props) => {
 
   useEffect(() => {
     onInput(id, value, isValid);
-  }, [id, isValid, onInput, value]);
+  }, [id, value, isValid, onInput]);
 
-  const changeHandler = (e) => {
+  const changeHandler = (event) => {
     dispatch({
       type: 'CHANGE',
-      val: e.target.value,
+      val: event.target.value,
       validators: props.validators,
     });
   };
 
   const touchHandler = () => {
-    dispatch({ type: 'TOUCH' });
+    dispatch({
+      type: 'TOUCH',
+    });
   };
 
   const element =
@@ -55,18 +57,19 @@ const Input = (props) => {
         type={props.type}
         placeholder={props.placeholder}
         onChange={changeHandler}
-        value={inputState.value}
         onBlur={touchHandler}
+        value={inputState.value}
       />
     ) : (
       <textarea
         id={props.id}
         rows={props.rows || 3}
         onChange={changeHandler}
-        value={inputState.value}
         onBlur={touchHandler}
+        value={inputState.value}
       />
     );
+
   return (
     <div
       className={`form-control ${
