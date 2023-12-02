@@ -1,45 +1,48 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import Button from '../../shared/components/FormElements/Button';
-import Input from '../../shared/components/FormElements/Input';
-import { useForm } from '../../shared/hooks/form-hook';
-import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 
+import Input from '../../shared/components/FormElements/Input';
+import Button from '../../shared/components/FormElements/Button';
+import {
+  VALIDATOR_REQUIRE,
+  VALIDATOR_MINLENGTH,
+} from '../../shared/util/validators';
+import { useForm } from '../../shared/hooks/form-hook';
 import './PlaceForm.css';
 
-const DUMMY_PLACEs = [
+const DUMMY_PLACES = [
   {
     id: 'p1',
-    title: 'empire state',
-    description: 'saldad',
+    title: 'Empire State Building',
+    description: 'One of the most famous sky scrapers in the world!',
     imageUrl:
-      'https://www.kitano.com/resourcefiles/snippet-main-img/empire-state-building-in-new-york-top.jpg?version=8242023115716',
-    address: '123103mm',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
+    address: '20 W 34th St, New York, NY 10001',
     location: {
-      lat: 123123,
-      lng: 122414,
+      lat: 40.7484405,
+      lng: -73.9878584,
     },
     creator: 'u1',
   },
   {
     id: 'p2',
-    title: 'empire state 2',
-    description: 'saldad',
+    title: 'Empire State Building',
+    description: 'One of the most famous sky scrapers in the world!',
     imageUrl:
-      'https://www.kitano.com/resourcefiles/snippet-main-img/empire-state-building-in-new-york-top.jpg?version=8242023115716',
-    address: '123103mm',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
+    address: '20 W 34th St, New York, NY 10001',
     location: {
-      lat: 123123,
-      lng: 122414,
+      lat: 40.7484405,
+      lng: -73.9878584,
     },
     creator: 'u2',
   },
 ];
 
 const UpdatePlace = () => {
-  const { placeId } = useParams();
+  const placeId = useParams().placeId;
 
-  const identifiedPlace = DUMMY_PLACEs.find((p) => p.id === placeId);
+  const identifiedPlace = DUMMY_PLACES.find((p) => p.id === placeId);
 
   const [formState, inputHandler] = useForm(
     {
@@ -55,31 +58,41 @@ const UpdatePlace = () => {
     true
   );
 
-  if (!identifiedPlace) return <p>Could not find place!</p>;
+  const placeUpdateSubmitHandler = (event) => {
+    event.preventDefault();
+    console.log(formState.inputs);
+  };
 
-  console.log('isss', formState);
+  if (!identifiedPlace) {
+    return (
+      <div className="center">
+        <h2>Could not find place!</h2>
+      </div>
+    );
+  }
 
   return (
-    <form className="place-form">
+    <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
       <Input
         id="title"
         element="input"
-        label="title"
+        type="text"
+        label="Title"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid title."
         onInput={inputHandler}
         initialValue={formState.inputs.title.value}
-        valid={formState.inputs.title.isValid}
+        initialValid={formState.inputs.title.isValid}
       />
       <Input
         id="description"
         element="textarea"
         label="Description"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid description."
+        validators={[VALIDATOR_MINLENGTH(5)]}
+        errorText="Please enter a valid description (min. 5 characters)."
         onInput={inputHandler}
         initialValue={formState.inputs.description.value}
-        valid={formState.inputs.description.isValid}
+        initialValid={formState.inputs.description.isValid}
       />
       <Button type="submit" disabled={!formState.isValid}>
         Update Place
