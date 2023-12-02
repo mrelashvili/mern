@@ -4,11 +4,13 @@ import Button from '../../shared/components/FormElements/Button';
 import Input from '../../shared/components/FormElements/Input';
 import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 
+import './PlaceForm.css';
+
 const DUMMY_PLACEs = [
   {
     id: 'p1',
     title: 'empire state',
-    desriptoon: 'saldad',
+    description: 'saldad',
     imageUrl:
       'https://www.kitano.com/resourcefiles/snippet-main-img/empire-state-building-in-new-york-top.jpg?version=8242023115716',
     address: '123103mm',
@@ -21,7 +23,7 @@ const DUMMY_PLACEs = [
   {
     id: 'p2',
     title: 'empire state 2',
-    desriptoon: 'saldad',
+    description: 'saldad',
     imageUrl:
       'https://www.kitano.com/resourcefiles/snippet-main-img/empire-state-building-in-new-york-top.jpg?version=8242023115716',
     address: '123103mm',
@@ -41,7 +43,7 @@ const UpdatePlace = () => {
   if (!identifiedPlace) return <p>Could not find place!</p>;
 
   return (
-    <form>
+    <form className="place-form">
       <Input
         id="title"
         element="input"
