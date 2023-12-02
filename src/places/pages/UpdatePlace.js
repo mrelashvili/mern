@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import Input from '../../shared/components/FormElements/Input';
+import { useForm } from '../../shared/hooks/form-hook';
 import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 
 import './PlaceForm.css';
@@ -40,7 +41,23 @@ const UpdatePlace = () => {
 
   const identifiedPlace = DUMMY_PLACEs.find((p) => p.id === placeId);
 
+  const [formState, inputHandler] = useForm(
+    {
+      title: {
+        value: identifiedPlace.title,
+        isValid: true,
+      },
+      description: {
+        value: identifiedPlace.description,
+        isValid: true,
+      },
+    },
+    true
+  );
+
   if (!identifiedPlace) return <p>Could not find place!</p>;
+
+  console.log('isss', formState);
 
   return (
     <form className="place-form">
@@ -50,9 +67,9 @@ const UpdatePlace = () => {
         label="title"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid title."
-        onInput={() => {}}
-        value={identifiedPlace.title}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.title.value}
+        valid={formState.inputs.title.isValid}
       />
       <Input
         id="description"
@@ -60,11 +77,11 @@ const UpdatePlace = () => {
         label="Description"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid description."
-        onInput={() => {}}
-        value={identifiedPlace.description}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.description.value}
+        valid={formState.inputs.description.isValid}
       />
-      <Button type="submit" disabled={true}>
+      <Button type="submit" disabled={!formState.isValid}>
         Update Place
       </Button>
     </form>
