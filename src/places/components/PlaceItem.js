@@ -7,14 +7,20 @@ import './PlaceItem.css';
 
 const PlaceItem = ({ place }) => {
   const [showMap, setShowMap] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
+  const showDeleteWarningHandler = () => setShowConfirmModal(true);
+  const cancelDeleteHandler = () => setShowConfirmModal(false);
 
+  const confirmDeleteWHandler = () => {
+    setShowConfirmModal(false);
+    console.log('Deleted...');
+  };
   const { id, imageUrl, title, description, address, creator, location } =
     place;
 
-  console.log('locc', location);
   return (
     <>
       <Modal
@@ -29,6 +35,24 @@ const PlaceItem = ({ place }) => {
           <span>lat: {location.lat}</span>
           <span>lng: {location.lng}</span>
         </div>
+      </Modal>
+      <Modal
+        show={showConfirmModal}
+        onCancel={cancelDeleteHandler}
+        header="Are you sure?"
+        footerClass="place-item__modal-actions"
+        footer={
+          <>
+            <Button inverse onClick={cancelDeleteHandler}>
+              Cancel
+            </Button>
+            <Button danger onClick={confirmDeleteWHandler}>
+              Delete
+            </Button>
+          </>
+        }
+      >
+        <p>Do you want to proceed and Delete this place?</p>
       </Modal>
       <li className="place-item">
         <Card className="place-item__content">
@@ -45,7 +69,9 @@ const PlaceItem = ({ place }) => {
               View on Map
             </Button>
             <Button to={`/places/${id}`}>Edit</Button>
-            <Button danger>Delete</Button>
+            <Button danger onClick={showDeleteWarningHandler}>
+              Delete
+            </Button>
           </div>
         </Card>
       </li>
