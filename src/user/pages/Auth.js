@@ -12,9 +12,14 @@ import {
 
 import './Auth.css';
 
+import ErrorModal from '../../shared/components/UIElement/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElement/LoadingSpinner';
+
 const Auth = () => {
   const auth = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
@@ -37,6 +42,7 @@ const Auth = () => {
     if (isLoginMode) {
     } else {
       try {
+        setIsLoading(true);
         const response = await fetch('http://localhost:5000/api/users/signup', {
           method: 'POST',
           headers: {
@@ -51,11 +57,12 @@ const Auth = () => {
 
         const data = await response.json();
         console.log(data);
+        setIsLoading(false);
+        auth.login();
       } catch (err) {
-        console.log(err);
+        setError(err.message || 'Something went wrong');
       }
     }
-    auth.login();
   };
 
   const switchModeHandler = () => {
@@ -84,6 +91,7 @@ const Auth = () => {
 
   return (
     <Card className="authentication">
+      {isLoading && <LoadingSpinner asOverlay />}
       <h2>Login required</h2>
       <form onSubmit={submitHandler}>
         {!isLogin && (
