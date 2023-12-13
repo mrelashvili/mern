@@ -7,8 +7,6 @@ import './styles/UserItem.css';
 const UserItem = ({ user }) => {
   const { id, image, name, places } = user;
 
-  console.log(places);
-
   return (
     <li className="user-item">
       <Card className="user-item__content">
