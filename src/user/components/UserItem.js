@@ -7,6 +7,8 @@ import './styles/UserItem.css';
 const UserItem = ({ user }) => {
   const { id, image, name, places } = user;
 
+  console.log(places);
+
   return (
     <li className="user-item">
       <Card className="user-item__content">
@@ -17,7 +19,8 @@ const UserItem = ({ user }) => {
           <div className="user-item__info">
             <h2>{name}</h2>
             <h3>
-              {places} {places === 1 ? 'Place' : 'Places'}
+              {places.length}{' '}
+              {places.length === 0 || places.length === 1 ? 'Place' : 'Places'}
             </h3>
           </div>
         </Link>
