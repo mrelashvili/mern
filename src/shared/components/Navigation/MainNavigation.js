@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Backdrop from '../UIElement/Backdrop';
 import MainHeader from './MainHeader';
 import './MainNavigation.css';
-import NavLinks from './NavLinks';
+import NavLinks from './Navlinks';
 import SideDrawer from './SideDrawer';
 
 const MainNavigation = (props) => {
