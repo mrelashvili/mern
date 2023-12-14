@@ -20,7 +20,7 @@ const PlaceItem = ({ place }) => {
     setShowConfirmModal(false);
     console.log('Deleted...');
   };
-  const { id, image, title, description, address, creator, location } = place;
+  const { _id, image, title, description, address, creator, location } = place;
 
   return (
     <>
@@ -71,7 +71,7 @@ const PlaceItem = ({ place }) => {
             </Button>
             {auth.isLoggedIn && (
               <>
-                <Button to={`/places/${id}`}>Edit</Button>
+                <Button to={`/places/${_id}`}>Edit</Button>
                 <Button danger onClick={showDeleteWarningHandler}>
                   Delete
                 </Button>

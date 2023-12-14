@@ -19,7 +19,7 @@ const PlaceList = ({ items }) => {
   return (
     <ul className="place-list">
       {items.map((place) => (
-        <PlaceItem place={place} key={place.id} />
+        <PlaceItem place={place} key={place._id} />
       ))}
     </ul>
   );
