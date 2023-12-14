@@ -16,6 +16,8 @@ const PlaceItem = ({ place, onDelete }) => {
   const { sendRequest, error, isLoading, clearError } = useHttpClient();
   const { _id, image, title, description, address, creator, location } = place;
 
+  console.log(creator);
+
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
   const showDeleteWarningHandler = () => setShowConfirmModal(true);
@@ -79,7 +81,7 @@ const PlaceItem = ({ place, onDelete }) => {
             <Button inverse onClick={openMapHandler}>
               View on Map
             </Button>
-            {auth.isLoggedIn && (
+            {auth.userId === creator && (
               <>
                 <Button to={`/places/${_id}`}>Edit</Button>
                 <Button danger onClick={showDeleteWarningHandler}>
