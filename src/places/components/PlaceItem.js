@@ -1,29 +1,38 @@
 import React, { useContext, useState } from 'react';
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElement/Card';
+import ErrorModal from '../../shared/components/UIElement/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElement/LoadingSpinner';
 import Map from '../../shared/components/UIElement/Map';
 import Modal from '../../shared/components/UIElement/Modal';
 import { AuthContext } from '../../shared/context/auth-context';
+import useHttpClient from '../../shared/hooks/http-hook';
 import './PlaceItem.css';
 
-const PlaceItem = ({ place }) => {
+const PlaceItem = ({ place, onDelete }) => {
   const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const { sendRequest, error, isLoading, clearError } = useHttpClient();
+  const { _id, image, title, description, address, creator, location } = place;
 
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
   const showDeleteWarningHandler = () => setShowConfirmModal(true);
   const cancelDeleteHandler = () => setShowConfirmModal(false);
 
-  const confirmDeleteWHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log('Deleted...');
+
+    try {
+      await sendRequest(`http://localhost:5000/api/places/${_id}`, 'DELETE');
+      onDelete(_id);
+    } catch (err) {}
   };
-  const { _id, image, title, description, address, creator, location } = place;
 
   return (
     <>
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -47,7 +56,7 @@ const PlaceItem = ({ place }) => {
             <Button inverse onClick={cancelDeleteHandler}>
               Cancel
             </Button>
-            <Button danger onClick={confirmDeleteWHandler}>
+            <Button danger onClick={confirmDeleteHandler}>
               Delete
             </Button>
           </>
@@ -57,6 +66,7 @@ const PlaceItem = ({ place }) => {
       </Modal>
       <li className="place-item">
         <Card className="place-item__content">
+          {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
             <img src={image} alt={title} />
           </div>
