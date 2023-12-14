@@ -20,8 +20,7 @@ const PlaceItem = ({ place }) => {
     setShowConfirmModal(false);
     console.log('Deleted...');
   };
-  const { id, imageUrl, title, description, address, creator, location } =
-    place;
+  const { id, image, title, description, address, creator, location } = place;
 
   return (
     <>
@@ -59,7 +58,7 @@ const PlaceItem = ({ place }) => {
       <li className="place-item">
         <Card className="place-item__content">
           <div className="place-item__image">
-            <img src={imageUrl} alt={title} />
+            <img src={image} alt={title} />
           </div>
           <div className="place-item__info">
             <h3>{title}</h3>

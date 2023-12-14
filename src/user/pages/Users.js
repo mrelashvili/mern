@@ -18,7 +18,7 @@ const Users = () => {
       } catch (err) {}
     };
     getUsers();
-  }, []);
+  }, [sendRequest]);
 
   return (
     <>

@@ -5,12 +5,12 @@ import Avatar from './../../shared/components/UIElement/Avatar';
 import './styles/UserItem.css';
 
 const UserItem = ({ user }) => {
-  const { id, image, name, places } = user;
+  const { _id, image, name, places } = user;
 
   return (
     <li className="user-item">
       <Card className="user-item__content">
-        <Link to={`/${id}/places`}>
+        <Link to={`/${_id}/places`}>
           <div className="user-item__image">
             <Avatar image={image} alt={name} />
           </div>

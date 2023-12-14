@@ -1,41 +1,40 @@
-import React from 'react';
-import { useParams } from 'react-router-dom/cjs/react-router-dom';
-import PlaceList from '../components/PlaceList';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const UserPlaces = () => {
-  const DUMMY_PLACEs = [
-    {
-      id: 'p1',
-      title: 'empire state',
-      desriptoon: 'saldad',
-      imageUrl:
-        'https://www.kitano.com/resourcefiles/snippet-main-img/empire-state-building-in-new-york-top.jpg?version=8242023115716',
-      address: '123103mm',
-      location: {
-        lat: 123123,
-        lng: 122414,
-      },
-      creator: 'u1',
-    },
-    {
-      id: 'p2',
-      title: 'empire state 2',
-      desriptoon: 'saldad',
-      imageUrl:
-        'https://www.kitano.com/resourcefiles/snippet-main-img/empire-state-building-in-new-york-top.jpg?version=8242023115716',
-      address: '123103mm',
-      location: {
-        lat: 123123,
-        lng: 122414,
-      },
-      creator: 'u2',
-    },
-  ];
+import PlaceList from '../components/PlaceList';
+import ErrorModal from '../../shared/components/UIElement/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElement/LoadingSpinner';
+import useHttpClient from '../../shared/hooks/http-hook';
+
+const UserPlace = () => {
+  const [loadedPlaces, setLoadedPlaces] = useState();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const userId = useParams().userId;
-  const loadedPlaces = DUMMY_PLACEs.filter((place) => place.creator === userId);
 
-  return <PlaceList items={loadedPlaces} />;
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/places/user/${userId}`
+        );
+        setLoadedPlaces(responseData.places);
+      } catch (err) {}
+    };
+    fetchPlaces();
+  }, [sendRequest, userId]);
+
+  return (
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && loadedPlaces && <PlaceList items={loadedPlaces} />}
+    </React.Fragment>
+  );
 };
 
-export default UserPlaces;
+export default UserPlace;
