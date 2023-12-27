@@ -42,6 +42,7 @@ const Auth = () => {
         {
           ...formState.inputs,
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -50,6 +51,10 @@ const Auth = () => {
         {
           ...formState.inputs,
           name: {
+            value: '',
+            isValid: false,
+          },
+          image: {
             value: '',
             isValid: false,
           },
@@ -62,6 +67,8 @@ const Auth = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    console.log(formState.inputs);
 
     if (isLogin) {
       try {
@@ -114,7 +121,7 @@ const Auth = () => {
               onInput={inputHandler}
             />
           )}
-          {!isLogin && <ImageUpload id="image" center />}
+          {!isLogin && <ImageUpload id="image" center onInput={inputHandler} />}
           <Input
             id="email"
             element="input"
