@@ -3,7 +3,6 @@ import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElement/Card';
 import ErrorModal from '../../shared/components/UIElement/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElement/LoadingSpinner';
-import Map from '../../shared/components/UIElement/Map';
 import Modal from '../../shared/components/UIElement/Modal';
 import { AuthContext } from '../../shared/context/auth-context';
 import useHttpClient from '../../shared/hooks/http-hook';
@@ -15,8 +14,6 @@ const PlaceItem = ({ place, onDelete }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { sendRequest, error, isLoading, clearError } = useHttpClient();
   const { _id, image, title, description, address, creator, location } = place;
-
-  console.log(creator);
 
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
@@ -70,7 +67,7 @@ const PlaceItem = ({ place, onDelete }) => {
         <Card className="place-item__content">
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
-            <img src={image} alt={title} />
+            <img src={`http://localhost:5000/${image}`} alt={title} />
           </div>
           <div className="place-item__info">
             <h3>{title}</h3>
