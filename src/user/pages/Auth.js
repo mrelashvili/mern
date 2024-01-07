@@ -79,7 +79,7 @@ const Auth = () => {
           }), /// Body
           { 'Content-Type': 'application/json' } /// Header
         );
-        auth.login(responseData.user._id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     } else {
       try {
@@ -98,7 +98,7 @@ const Auth = () => {
           //   password: formState.inputs.password.value,
           // }),
         );
-        auth.login(responseData.user._id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
   };
