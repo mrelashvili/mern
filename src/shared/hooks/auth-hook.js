@@ -1,19 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
-const useAuth = () => {
-  let logoutTimer;
+let logoutTimer;
 
+export const useAuth = () => {
   const [token, setToken] = useState(false);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(false);
 
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
     setUserId(uid);
-
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
-
     setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem(
       'userData',
@@ -33,7 +31,7 @@ const useAuth = () => {
   }, []);
 
   useEffect(() => {
-    if (token) {
+    if (token && tokenExpirationDate) {
       const remainingTime =
         tokenExpirationDate.getTime() - new Date().getTime();
       logoutTimer = setTimeout(logout, remainingTime);
@@ -57,7 +55,5 @@ const useAuth = () => {
     }
   }, [login]);
 
-  return { login, logout, token, userId };
+  return { token, login, logout, userId };
 };
-
-export default useAuth;
